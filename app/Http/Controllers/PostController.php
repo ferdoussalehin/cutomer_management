@@ -7,7 +7,7 @@ use DB;
 
 class PostController extends Controller
 {
-    
+
 
     public function add_post() {
 
@@ -19,14 +19,14 @@ class PostController extends Controller
                 // return response()->json($posts);
 
 
-
+        // Get categories from categories table
         $category = DB::table('categories')->get();
     	return view('post.add_post', compact('category'));
 
     }
 
     public function insert_post( Request $request) {
-    	
+
         // $validated = $request->validate([
         // 'title' => 'required|unique:posts|max:255',
         // 'detail' => 'required',
@@ -37,12 +37,12 @@ class PostController extends Controller
     	$data['title'] = $request->post_title;
         $data['category_id'] = $request->category_id;
     	$data['detail'] = $request->post_detail;
-        
+
         if($request->image) {
-            $imageName = time().'.'.$request->image->extension();  
+            $imageName = time().'.'.$request->image->extension();
             $request->image->move(public_path('images'), $imageName);
             $data['image'] = $imageName;
-        } 
+        }
 
         $category = DB::table('posts')->insert($data);
 
@@ -54,7 +54,7 @@ class PostController extends Controller
     }
 
     public function update_post(Request $request) {
-        
+
 
         $data = array();
         $data['title'] = $request->post_title;
@@ -64,10 +64,10 @@ class PostController extends Controller
         $post_id = $request->post_id;
 
         $post = DB::table('posts')->where('id', $request->post_id)->first();
-        
+
         if($request->image) {
             unlink('images/'.$post->image);
-            $imageName = time().'.'.$request->image->extension();  
+            $imageName = time().'.'.$request->image->extension();
             $request->image->move(public_path('images'), $imageName);
             $data['image'] = $imageName;
         } else {
@@ -88,7 +88,7 @@ class PostController extends Controller
         $category = DB::table('posts')->where('id',$id)->delete();
 
         return redirect()->back()->with('message', 'Post deleted!');
-        
+
     }
 
     public function edit_post($id) {
