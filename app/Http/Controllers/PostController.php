@@ -19,7 +19,7 @@ class PostController extends Controller
                 // return response()->json($posts);
 
 
-        // Get categories from categories table
+        // Get categories from categories table sss
         $category = DB::table('categories')->get();
     	return view('post.add_post', compact('category'));
 
